@@ -1,0 +1,136 @@
+\documentclass[11pt,twoside]{article}
+%\documentclass[10pt,twoside,twocolumn]{article}
+\usepackage[english]{babel}
+\usepackage{times,subeqnarray}
+\usepackage{url}
+% following is for pdflatex vs. old(dvi) latex
+\newif\myifpdf
+\ifx\pdfoutput\undefined
+%  \pdffalse           % we are not running PDFLaTeX
+   \usepackage[dvips]{graphicx}
+\else
+   \pdfoutput=1        % we are running PDFLaTeX
+%  \pdftrue
+   \usepackage[pdftex]{graphicx}
+\fi
+\usepackage{apatitlepages}
+% if you want to be more fully apa-style for submission, then use this
+%\usepackage{setspace,psypub,ulem}
+%\usepackage{setspace} % must come before psypub
+%\usepackage{psypub}
+\usepackage{psydraft}
+%\usepackage{one-in-margins}  % use instead of psydraft for one-in-margs
+%\usepackage{apa}       % apa must come last
+\usepackage[natbibapa]{apacite}   % natbib
+% \usepackage{csquotes}  % biblatex
+% \usepackage[style=apa]{biblatex}
+\input netsym
+
+% tell pdflatex to prefer .pdf files over .png files!!
+\myifpdf
+  \DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps,.tif}
+\fi
+
+% use 0 for psypub format 
+\parskip 2pt
+% for double-spacing, determines spacing 
+%\doublespacing
+%\setstretch{1.7}
+
+\columnsep .25in   % 3/8 in column separation
+
+\def\myheading{ Error Backpropagation Learnign in Spiking Neurons }
+
+% no twoside for pure apa style, use \markright with heading only
+\pagestyle{myheadings}
+\markboth{\hspace{.5in} \myheading \hfill}{\hfill O'Reilly \hspace{.5in}}
+
+\begin{document}
+\bibliographystyle{apacite}
+
+% sloppy is the way to go!
+\sloppy
+\raggedbottom
+
+\def\mytitle{ Error Backpropagation Learnign in Spiking Neurons }
+
+\def\myauthor{Randall C. O'Reilly\\
+  Departments of Psychology and Computer Science\\
+  Center for Neuroscience\\
+  University of California, Davis \\
+  1544 Newton Ct\\
+  Davis, CA 95616\\
+  {\small oreilly@ucdavis.edu}\\}
+
+\def\mynote{Draft Manuscript: Do not cite or quote without
+  permission.\\
+
+  R. C. O'Reilly is Director of Science at the Obelisk Lab in the Astera Institute, and Chief Scientist at eCortex, Inc., which may derive indirect benefit from the work presented here.
+
+  Supported by: ONR grants N00014-19-1-2684/ N00014-18-1-2116 (Deep learn), N00014-14-1-0670 / N00014-16-1-2128 (Bidir vis), N00014-18-C-2067 (MDM)
+
+  This work utilized the Janus supercomputer, which is supported by the National Science Foundation (award number CNS-0821794) and the University of Colorado Boulder. The Janus supercomputer is a joint effort of the University of Colorado Boulder, the University of Colorado Denver and the National Center for Atmospheric Research.
+}
+
+\def\myabstract{
+  Now that's abstract..
+}
+
+% \titlesepage{\mytitle}{\myauthor}{\mynote}{\myabstract}
+% \twocolumn
+
+%\titlesamepage{\mytitle}{\myauthor}{\mynote}{\myabstract}
+
+\titlesamepageoc{\mytitle}{\myauthor}{\mynote}{\myabstract}
+
+% single-spaced table of contents, delete if unwanted
+% \newpage
+% \begingroup
+% \parskip 0em
+% \tableofcontents
+% \endgroup
+% \newpage
+
+% \twocolumn
+
+\pagestyle{myheadings}
+
+How does the human brain learn from experience?  This basic question remains unanswered, specifically with respect to the most important brain system, the neocortex, which is responsible for all of our higher cognitive functions that are acquired over a lifetime of learning.  The most powerful and well-established computational-level model is error backpropagation \citep{RumelhartHintonWilliams86}, which drives the current generation of artificial intelligence systems \citep{LeCunBengioHinton15}.  There are a number of existing ideas about how this form of learning could be supported by the neocortex \citep{WhittingtonBogacz19,LillicrapSantoroMarrisEtAl20}.  Here, we further develop one of these approaches, based on the \textit{GeneRec} (generalized recirculation) approximation originally developed in \citet{OReilly96} (see \citealp{XieSeung03,ScellierBengio17} for other derivations), where the error signal is represented as a difference over time (i.e., a \textit{temporal difference}) between an earlier \textit{prediction} phase and a subsequent \textit{outcome} phase.  Each of these phases represents a coherent state of activity in the cortical network driven by the natural bidirectional propagation of signals through the ubiquitous bidirectional connectivity in the neocortex, without any need for specialized neuron types that explicitly compute and propagate an error signal.  The detailed properties of the corticothalamic pathways naturally generate a temporal sequence of prediction-outcome states, supporting a form of predictive error-driven learning that provides an essentially unlimited supply of training signals to drive learning \citep{OReillyRussinZolfagharEtAl21}.
+
+The existing biologically-based models of backpropagation-like learning use simplified continuous-valued rate-coded neural signals.  In this paper, we show that the temporal-difference error-driven learning mechanism also works well using discrete spiking neurons, computed with standard conductance-based equations that accurately capture neocortical pyramidal neuron spiking dynamics \citep{BretteGerstner05,GerstnerNaud09}.  One critical addition to these equations was required: the addition of longer time-scale NMDA and GABA-B channels that previously have been used to simulate sustained working-memory firing in the prefrontal cortex (PFC) \citep{SandersBerendsMajorEtAl13}.  These channels have time constants of around 100 and 50 msec, respectively, and work synergistically together to stabilize a sparse distributed pattern of neural firing for a sufficient period of time to support the temporal-difference signals, which evolve over a period of roughly 100-200 msec \citep{OReillyRussinZolfagharEtAl21}.  These channels exist throughout the neocortex, but likely have a weaker influence in the posterior neocortex relative to the PFC, which is compatible with the weaker levels of stabilization required for the predictive error-driven learning hypothesized to occur in posterior neocortex (e.g., for learning to predict the sequence of sensory signals impinging from the external environment).
+
+There are a number of widely-discussed benefits of the discrete spiking (action potentials) in biological neurons, including efficiency from sparse communication, the ability to rapidly communicate an initial first-pass interpretation of a sensory input based on the timing of the first neurons to spike \citep{ThorpeDelormeVanRullen01}, the ability to stochastically represent and sample from full probability distributions (as in variational neural networks) \citep{McKeeCrandellChaudhuriEtAl21,etc}, and the enhanced ability to encode multiple signals over time relative to a single continuous rate-code signal.  Thus, being able to drive powerful error-driven learning using discrete spiking neurons opens up many new possibilities relative to existing models.
+
+\begin{figure}
+  \centering\includegraphics[width=2in]{figs/fig_xcal_dwt_fun}
+  \caption{\footnotesize The XCAL dWt function, showing direction and magnitude of synaptic weight changes (dWt) as a function of the short-term average activity of the sending neuron (x) times the receiving neuron (y). This quantity is a simple mathematical approximation to the level of postsynaptic $Ca^{++}$, reflecting the dependence of the NMDA channel on both sending and receiving neural activity. This function was extracted directly from the detailed biophysical Urakubo et al., (2008) model, by fitting a piecewise linear function to the synaptic weight change behavior that emerges from it as a function of a wide range of sending and receiving spiking patterns.}
+  \label{fig.xcal}
+\end{figure}
+
+Historically, thinking about learning in the context of discrete spiking neurons has been dominated by the \textit{spike timing dependent plasticity (STDP)} paradigm, based on the striking finding of asymmetric patterns of synaptic increase (long term potentiation, LTP), vs decrease (long term depression, LTD) as a function of the temporal relationship between pre-synaptic vs. post-synaptic firing  \citep{BiPoo98,etc}.  Specifically,  pre-before-post timing drives LTP and vice-versa for post-before-pre, consistent with reinforcing a causal ordering of spike influence of presynaptic activation on postsynaptic firing.  However, despite the replicability of the very specific original STDP protocol (requiring 1 s pauses between pairs of otherwise isolated pre-post spikes), further variations of this protocol involving more than a pair of spikes and different patterns of overall timing have shown that STDP is better understood as a kind of artifact of this specific protocol, rather than a robust principle for understanding how neurons actually learn in the context of more naturalistic patterns of activity \citep{ShouvalWangWittenberg10}.  In particular, we analyzed a biophysically-detailed model of neural plasticity, which accounts for a wide range of empirical findings \citep{UrakuboHondaFroemkeEtAl08}, and recovered a simple abstract learning function that accounts for nearly 90\% of the variance in learning outcomes in realistic poisson spike trains \citep{OReillyMunakataFrankEtAl12}.  This function is essentially a linearized form of the classic BCM learning algorithm \citep{BienenstockCooperMunro82}, consistent with the closely-related model of \citet{ShouvalWangWittenberg10} (Figure~\ref{fig.xcal}).
+
+% todo: fix caption
+\begin{figure}
+  \centering\includegraphics[width=4in]{figs//fig_xcal_bcm_err_learn}
+  \caption{\footnotesize  How the floating threshold as a function of medium-term average synaptic activity $\langle x y \rangle_m$ can produce error-driven learning. This medium time frame reflects the development of a pattern of neural activity that encodes an expectation about what will happen next. The most recent short term synaptic activity (which drives learning) represents the actual outcome of what did happen next. Because of the (nearly) linear nature of the dWt function, it effectively computes the difference between outcome and expectation. Qualitatively, if the outcome produces greater activation of a population of neurons than did expectation, corresponding weights go up, while neurons that decreased their activity states as a result of the outcome will have their weights go down. This is illustrated above in the case of low vs. high expectations.}
+  \label{fig.xcal_err}
+\end{figure}
+
+This simplified learning function is used in the present model, driven by a simple model of calcium ion influx through NMDA channels as a function of pre and postsynaptic spiking.  In particular, due to the linear form of the function, if the critical threshold where LTD transitions into LTP changes as a function of the calcium signal present during the prediction phase, then subsequent calcium-driven learning during the outcome phase computes the necessary temporal difference required by the learning algorithm (Figure~\ref{fig.xcal_err}) \citep{OReillyMunakataFrankEtAl12}.  We now have direct empirical evidence testing for this form of learning in pyramidal neurons in the hippocampus (in the same CA3 to CA1 pathway where STDP was established, along with most other work on synaptic plasticity), showing that it accurately characterizes synaptic plasticity over a range of temporal differences in firing rates (Jang et al, in prep).  Our computational models of learning in the hippocampus propose that the same form of error-driven learning should operate in these CA1 synapses \citep{KetzMorkondaOReilly13,ZhengLiuNishiyamaEtAl21} (indeed, we view CA1 as the last outpost of the neocortex within the hippocampal formation).
+
+Thus, the present model provides a relatively complete and consistent biological and computational framework for error-driven learning in the neocortex, using detailed, physiologically accurate spiking neurons to perform powerful learning that can be driven by abundant sources of prediction errors.  The remainder of the paper is organized as follows.  First, the essential stabilizing function of the NMDA and GABA-B channels is demonstrated in a simple non-learning bidirectionally-connected multi-layer cortical model.  Next, a sequence of increasingly complex previously-published models are tested using the new spiking-based error-driven learning, testing the relative learning properties in comparison to existing rate-code models, and other approaches to biologically-plausible backpropagation.  Then, we explore models that specifically demonstrate the benefits of spiking-based activations for encoding probability distributions and more graded signals.  Finally, we discuss this model in comparison to other approaches to training spiking models, and other relevant models and data, in the general discussion.
+
+\section{Stabilizing Effects of NMDA and GABA-B}
+
+\section{Basic Supervised Category Learning in the MNIST Digit Recognition Task}
+
+\section{Large-scale 100-way Classification Learning of Realistic 3D Images}
+
+\section{Predictive Learning}
+
+\section{General Discussion}
+
+\bibliography{ccnlab}
+
+\end{document}
+
